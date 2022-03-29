@@ -18,7 +18,9 @@ const HomePage = () => {
         <CountryWallet />
       </div>
 
-      <div className="shadow-2xl bg-white shadow-blue-300/30 rounded-xl p-12 row-span-3">heyo</div>
+      <div className="shadow-2xl bg-white shadow-blue-300/30 rounded-xl p-12 row-span-3">
+        <CountryTopList />
+      </div>
       <div className="shadow-2xl bg-white shadow-blue-300/30 rounded-xl p-12 col-span-3 row-span-2">heyo</div>
 
     </div>
@@ -72,7 +74,7 @@ const CountryWallet = () => {
   const { data, isLoading, error } = useQuery('countrycount', () => GetCountryCount(), {
     onSuccess: (data) => {
       let countryCount = data.data;
-      let countryChartArray = Object.keys(countryCount).map((key) => ({angle: countryCount[key], label: key}));
+      let countryChartArray = countryCount.map((country) => ({ angle: country.count, label: country.countryLabel}));
       setCountryChartData(countryChartArray);
     }
   });
@@ -100,6 +102,7 @@ const CountryTopList = () =>{
   return(
     <div className='h-full w-full flex flex-col gap-4 justify-center items-center'>
       <h2 className='font-bold text-xl uppercase'>Top 15 des pays</h2>
+      {data && data.data.map((country) => (<div>{country.countryLabel} {country.count}</div>))}
     </div>
   )
 }
