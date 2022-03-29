@@ -35,3 +35,8 @@ export const GetUserByPage = async (page, params) => {
   });
 }
 
+export const GetOneUser = async (uuid) => {
+  console.log(uuid);
+  return axios.get(`${uri}profile/${uuid}`);
+}
+

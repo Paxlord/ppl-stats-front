@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { GetUserByPage } from "../api/users";
+import { useNavigate } from "react-router-dom";
 
 const UsersPage = () => {
 
@@ -10,12 +11,12 @@ const UsersPage = () => {
   const [state, setState] = useState('');
   const [gender, setGender] = useState('');
   const [city, setCity] = useState('');
-  const [telephone, setTelephone] = useState('');
+  const [phone, setTelephone] = useState('');
 
   const maxPage = Math.floor(5000/250) - 1;
   const [usersArray, setUsersArray] = useState([]);
 
-  const { data, loading, error } = useQuery(['usersPage', page, name, state, gender, city, telephone], () => GetUserByPage(page, {name, state, gender, city, telephone}), {
+  const { data, loading, error } = useQuery(['usersPage', page, name, state, gender, city, phone], () => GetUserByPage(page, {name, state, gender, city, phone}), {
     onSuccess: (data) => {
       console.log("data", data);
       let tempArray = [...usersArray, ...data.data];
@@ -29,7 +30,7 @@ const UsersPage = () => {
   useEffect(() => {
     setUsersArray([]);
     setPage(0);
-  }, [name, state, telephone, city, gender])
+  }, [name, state, phone, city, gender])
 
   return(
     <div className="overflow-auto w-full mx-8">
@@ -66,9 +67,10 @@ const UsersPage = () => {
 const UserItem = ({user}) => {
 
   const { name, picture } = user;
+  const navigate = useNavigate();
 
   return(
-    <div className="transition ease-in-out flex gap-8 items-center py-4 px-3 my-4 rounded-md bg-white hover:bg-blue-500 hover:text-white hover:shadow-blue-500/50 shadow-md cursor-pointer">
+    <div onClick={() => navigate(`/user/${user.login.uuid}`)} className="transition ease-in-out flex gap-8 items-center py-4 px-3 my-4 rounded-md bg-white hover:bg-blue-500 hover:text-white hover:shadow-blue-500/50 shadow-md cursor-pointer">
       <img src={picture.thumbnail} className="rounded-full" />
       <strong>{name.title} {name.first} {name.last}</strong>
     </div>
