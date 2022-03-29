@@ -29,7 +29,9 @@ export const Get100Users = async () => {
   return axios.get(localUrl);
 }
 
-export const GetUserByPage = async (page) => {
-  return axios.get(`${paginationUrl}/${page}`);
+export const GetUserByPage = async (page, params) => {
+  return axios.get(`${paginationUrl}/${page}`, {
+    params
+  });
 }
 
