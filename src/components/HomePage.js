@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { GetCountryCount, GetGenderCount, GetUsersCount } from '../api/users';
-import { RadialChart } from 'react-vis';
+import { Doughnut } from 'react-chartjs-2';
+import 'chart.js/auto';
 
 const HomePage = () => {
 
@@ -21,7 +22,10 @@ const HomePage = () => {
       <div className="shadow-2xl bg-white shadow-blue-300/30 rounded-xl p-12 row-span-3">
         <CountryTopList />
       </div>
-      <div className="shadow-2xl bg-white shadow-blue-300/30 rounded-xl p-12 col-span-3 row-span-2">heyo</div>
+
+      <div className="shadow-2xl bg-white shadow-blue-300/30 rounded-xl p-12 col-span-3 row-span-2">
+        
+      </div>
 
     </div>
 
@@ -51,7 +55,21 @@ const GenderWallet = () => {
   const { data, isLoading, error } = useQuery('gendercount', () => GetGenderCount(), {
     onSuccess: (data) => {
       let genderCount = data.data;
-      let genderChartArray = Object.keys(genderCount).map((key) => ({angle: genderCount[key], label: key}));
+      let genderArray = Object.keys(genderCount).map((key) => genderCount[key]);
+
+      console.log(genderArray);
+      let genderChartArray = {
+        labels: Object.keys(genderCount),
+        datasets: [
+          {
+            data: genderArray,
+            backgroundColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+            ]
+          }
+        ]
+      }
       setGenderChartData(genderChartArray);
     }
   });
@@ -61,7 +79,7 @@ const GenderWallet = () => {
   return(
     <div className='h-full w-full flex flex-col gap-4 justify-center items-center'>
       <h2 className='font-bold text-xl uppercase'>Répartition par genre</h2>
-      <RadialChart data={genderChartData} height={200} width={200} innerRaidus={68} radius={75} showLabels/>
+      {genderChartData && <Doughnut data={genderChartData} height={200} width={200}/>}
     </div>
   )
 
@@ -74,7 +92,32 @@ const CountryWallet = () => {
   const { data, isLoading, error } = useQuery('countrycount', () => GetCountryCount(), {
     onSuccess: (data) => {
       let countryCount = data.data;
-      let countryChartArray = countryCount.map((country) => ({ angle: country.count, label: country.countryLabel}));
+      console.log("countries", countryCount);
+      let countryArray = Object.keys(countryCount).map((key) => countryCount[key]);
+      let countryChartArray = {
+        labels: countryCount.map((country) => country.countryLabel ),
+        datasets: [
+          {
+            data: countryCount.map((country) => country.count ),
+            backgroundColor: [
+              "#F7AEF8",
+              "#B388EB",
+              "#8093F1",
+              "#72DDF7",
+              "#5DFDCB",
+              "#C5FFFD",
+              "#C62E65",
+              "#624763",
+              "#2F1847",
+              "#EE6C4D",
+              "#CAFFD0",
+              "#613A3A",
+              "#A6FFA1",
+              "#E7DFC6",
+            ]
+          }
+        ],
+      };
       setCountryChartData(countryChartArray);
     }
   });
@@ -84,7 +127,7 @@ const CountryWallet = () => {
   return(
     <div className='h-full w-full flex flex-col gap-4 justify-center items-center'>
       <h2 className='font-bold text-xl uppercase'>Répartition par pays</h2>
-      <RadialChart data={countryChartData} height={200} width={200} innerRaidus={68} radius={75} showLabels/>
+      {countryChartData && <Doughnut data={countryChartData} options={{plugins: { legend: { display: false}}}} height={200} width={200}/>}
     </div>
   )
 
