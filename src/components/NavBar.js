@@ -38,7 +38,7 @@ const ProfileItem = () => {
 const NavBar = () => {
  
   return(
-    <div className='w-56 h-screen shadow-lg flex flex-col my-8'>
+    <div className='w-56 h-full shadow-lg flex flex-col py-8 bg-white'>
       <ProfileItem />
       {Menu.map((menuItem) => <MenuItem menuItem={menuItem} />)}
     </div>

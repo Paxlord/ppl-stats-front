@@ -1,19 +1,19 @@
 import { Route, Routes, Link } from 'react-router-dom';
 
-import LoginPage from './components/LoginPage';
 import NavBar from './components/NavBar';
+import HomePage from './components/HomePage';
 
 const App = () => {
 
   return(
 
-    <div className='flex'>
+    <div className='flex h-screen w-screen bg-blue-50/50'>
 
       <NavBar />
 
-      <div className='mt-12 mx-12 overflow-auto'>
+      <div className='mx-12 h-full flex-1 flex items-center justify-center'>
         <Routes>
-          <Route path="/" element={<LoginPage />}/>
+          <Route path="/" element={<HomePage />}/>
         </Routes>
       </div>
     </div>
