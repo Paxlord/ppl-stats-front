@@ -2,6 +2,7 @@ import { Route, Routes, Link } from 'react-router-dom';
 
 import NavBar from './components/NavBar';
 import HomePage from './components/HomePage';
+import UsersPage from './components/UsersPage';
 
 const App = () => {
 
@@ -11,9 +12,10 @@ const App = () => {
 
       <NavBar />
 
-      <div className='mx-12 h-full flex-1 flex items-center justify-center'>
+      <div className='mx-12 h-full flex-1 flex items-stretch'>
         <Routes>
           <Route path="/" element={<HomePage />}/>
+          <Route path="/users" element={<UsersPage />} />
         </Routes>
       </div>
     </div>

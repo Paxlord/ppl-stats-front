@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const uri = "http://localhost:5500/users/";
-const paginationUrl = `${uri}/pagination/`;
+const paginationUrl = `${uri}pagination`;
 const countUrl = `${uri}count`;
 const genderUrl = `${uri}stats/gender`;
 const countryUrl = `${uri}stats/country`;
@@ -27,5 +27,9 @@ export const GetCountryCount = async () => {
 
 export const Get100Users = async () => {
   return axios.get(localUrl);
+}
+
+export const GetUserByPage = async (page) => {
+  return axios.get(`${paginationUrl}/${page}`);
 }
 

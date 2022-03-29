@@ -9,7 +9,7 @@ const HomePage = () => {
 
   return(
 
-    <div className="h-5/6 w-full grid gap-8 grid-cols-4 grid-rows-3">
+    <div className="h-5/6 w-full grid gap-8 grid-cols-4 grid-rows-3 self-center">
       <div className="shadow-2xl bg-white shadow-blue-300/30 rounded-xl p-12 flex justify-between items-center">
         <UserWallet />
       </div>
