@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { GetCountryCount, GetGenderCount, GetUsersCount } from '../api/users';
+import { Get100Users, GetCountryCount, GetGenderCount, GetUsersCount } from '../api/users';
 import { Doughnut } from 'react-chartjs-2';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'chart.js/auto';
 
 const HomePage = () => {
@@ -23,8 +24,8 @@ const HomePage = () => {
         <CountryTopList />
       </div>
 
-      <div className="shadow-2xl bg-white shadow-blue-300/30 rounded-xl p-12 col-span-3 row-span-2">
-        
+      <div className="shadow-2xl bg-white shadow-blue-300/30 rounded-xl col-span-3 row-span-2">
+        <MapView />
       </div>
 
     </div>
@@ -79,7 +80,7 @@ const GenderWallet = () => {
   return(
     <div className='h-full w-full flex flex-col gap-4 justify-center items-center'>
       <h2 className='font-bold text-xl uppercase'>Répartition par genre</h2>
-      {genderChartData && <Doughnut data={genderChartData} height={200} width={200}/>}
+      {genderChartData && <Doughnut data={genderChartData} options={{ maintainAspectRatio: false }} height={200} width={200}/>}
     </div>
   )
 
@@ -127,7 +128,7 @@ const CountryWallet = () => {
   return(
     <div className='h-full w-full flex flex-col gap-4 justify-center items-center'>
       <h2 className='font-bold text-xl uppercase'>Répartition par pays</h2>
-      {countryChartData && <Doughnut data={countryChartData} options={{plugins: { legend: { display: false}}}} height={200} width={200}/>}
+      {countryChartData && <Doughnut data={countryChartData} options={{plugins: { legend: { display: false}}, maintainAspectRatio: false}} height={200} width={200}/>}
     </div>
   )
 
@@ -147,6 +148,24 @@ const CountryTopList = () =>{
       <h2 className='font-bold text-xl uppercase'>Top 15 des pays</h2>
       {data && data.data.map((country) => (<div>{country.countryLabel} {country.count}</div>))}
     </div>
+  )
+}
+
+const MapView = () =>{
+  const { data, isLoading, error } = useQuery('localUsers', () => Get100Users());
+
+  if (isLoading) return 'loading...'
+
+  return(
+    <MapContainer center={[51.505, -0.09]} style={{ height: '100%', width: "100%" }} className="rounded-xl" zoom={4}>
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {data && data.data.map((user)  => (
+        <Marker position={[user.location.coordinates.latitude, user.location.coordinates.longitude]} />
+      ))}
+    </MapContainer>
   )
 }
 

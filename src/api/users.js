@@ -5,6 +5,8 @@ const paginationUrl = `${uri}/pagination/`;
 const countUrl = `${uri}count`;
 const genderUrl = `${uri}stats/gender`;
 const countryUrl = `${uri}stats/country`;
+const localUrl = `${uri}localisations`;
+
 
 
 export const GetAllUsers = async (page) => {
@@ -21,5 +23,9 @@ export const GetGenderCount = async ()=> {
 
 export const GetCountryCount = async () => {
   return axios.get(countryUrl);
+}
+
+export const Get100Users = async () => {
+  return axios.get(localUrl);
 }
 
